@@ -21,3 +21,12 @@ export interface TestCase {
   text: string;
   expectedSentiment: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
 }
+
+export type DeviceType = 'cpu' | 'webgpu' | 'webgl';
+
+export interface BenchmarkResult {
+  device: DeviceType;
+  time: number;
+  status: 'success' | 'error';
+  speedup?: string;
+}

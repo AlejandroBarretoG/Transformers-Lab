@@ -22,22 +22,29 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onModelReady }) => {
 
     // Step 1: Environment Check
     const startEnv = performance.now();
-    addLog("Verificando entorno del navegador...", "pending", "env");
+    addLog("Verificando entorno y aceleración hardware...", "pending", "env");
     
     const info = TransformersService.getEngineInfo();
     const hasWebAssembly = typeof WebAssembly === 'object';
     const threads = navigator.hardwareConcurrency;
-
-    await new Promise(r => setTimeout(r, 600)); // Simulate check time for UX
     
-    addLog(`Entorno verificado: ${threads} Cores, WASM: ${hasWebAssembly ? 'OK' : 'No detectado'}`, "success", "env", performance.now() - startEnv);
+    // Simulate check time for UX
+    await new Promise(r => setTimeout(r, 600)); 
+    
+    const gpuStatus = [];
+    if (info.webGpuAvailable) gpuStatus.push("WebGPU");
+    if (info.webGlAvailable) gpuStatus.push("WebGL");
+    const gpuMsg = gpuStatus.length > 0 ? gpuStatus.join(' + ') : "Solo CPU";
+
+    addLog(`Hardware: ${threads} Cores, WASM: ${hasWebAssembly ? 'OK' : 'No'}, Aceleración: ${gpuMsg}`, "success", "env", performance.now() - startEnv);
 
     // Step 2: Model Loading
-    addLog("Cargando modelo (DistilBERT SST-2)...", "pending", "model");
+    addLog("Cargando modelo (Default CPU/WASM)...", "pending", "model");
     
     try {
       const startModel = performance.now();
-      await TransformersService.loadModel((data: any) => {
+      // Default diagnostic loads on CPU to ensure basic functionality
+      await TransformersService.loadModel({ device: 'cpu' }, (data: any) => {
         if (data.status === 'progress') {
            setProgress(data.progress || 0);
         }

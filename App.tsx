@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DiagnosticPanel from './components/DiagnosticPanel';
 import PracticalDemo from './components/PracticalDemo';
+import BenchmarkReport from './components/BenchmarkReport';
 
 const App: React.FC = () => {
   const [isSystemReady, setIsSystemReady] = useState(false);
@@ -22,6 +23,9 @@ const App: React.FC = () => {
         <div className="lg:col-span-5 space-y-6">
           <DiagnosticPanel onModelReady={() => setIsSystemReady(true)} />
           
+          {/* Reemplazo del módulo anterior por el nuevo reporte comparativo */}
+          <BenchmarkReport isReady={isSystemReady} />
+
           <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
             <h3 className="text-lg font-semibold text-white mb-3">Información Técnica</h3>
             <ul className="space-y-2 text-sm text-slate-400">
@@ -34,8 +38,9 @@ const App: React.FC = () => {
                 <span className="text-slate-200">DistilBERT (SST-2)</span>
               </li>
               <li className="flex justify-between border-b border-slate-700 pb-1">
-                <span>Backend:</span>
-                <span className="text-slate-200">ONNX Runtime (WASM/WebGL)</span>
+                <span>Backend Actual:</span>
+                {/* Se actualizará dinámicamente en futuros renders si conectamos estado, por ahora estático */}
+                <span className="text-slate-200">ONNX Runtime Web</span>
               </li>
               <li className="flex justify-between pt-1">
                 <span>Estado API Gemini:</span>
