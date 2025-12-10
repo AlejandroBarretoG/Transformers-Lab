@@ -1,4 +1,4 @@
-import { pipeline, env, Pipeline } from '@xenova/transformers';
+import { pipeline, env } from '@xenova/transformers';
 import { SentimentResult } from '../types';
 
 // Configure transformers.js to use hosted models and cache
@@ -6,7 +6,8 @@ env.allowLocalModels = false;
 env.useBrowserCache = true;
 
 class TransformersService {
-  private static instance: Pipeline | null = null;
+  // Use 'any' for the pipeline instance to avoid import issues with the CDN bundle
+  private static instance: any | null = null;
   private static task = 'sentiment-analysis';
   private static model = 'Xenova/distilbert-base-uncased-finetuned-sst-2-english';
 

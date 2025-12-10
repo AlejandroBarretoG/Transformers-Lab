@@ -1,3 +1,7 @@
+import { Buffer } from 'buffer';
+// Polyfill Buffer globally for transformers.js/onnxruntime
+(window as any).Buffer = (window as any).Buffer || Buffer;
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
